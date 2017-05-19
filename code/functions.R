@@ -4,7 +4,7 @@ library(data.table)
 
 #' Title
 #'
-#' @param your.data 
+#' @param your.dt a data.table generated from the txt file exported by Gremlin.
 #'
 #' @return
 #' @export
