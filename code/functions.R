@@ -3,12 +3,12 @@
 library(data.table)
 
 #' Title
-#'
+#' 
 #' @param your.dt a data.table generated from the txt file exported by Gremlin.
-#'
+#'   
 #' @return
 #' @export
-#'
+#' 
 #' @examples
 symmetrize <- function(your.dt)
 {
