@@ -1,23 +1,30 @@
-
-# This is the server logic for a Shiny web application.
-# You can find out more about building applications with Shiny here:
-#
-# http://shiny.rstudio.com
-#
+#  Make an interactive plot with Shiny!
+# This is the server logic for your Shiny web application.
 
 library(shiny)
+#library(data.table)
+#library(reshape)
+#library(ggplot2)
+#library(rbokeh)
+
+# Define server logic required to draw contact map
 
 shinyServer(function(input, output) {
-
-  output$distPlot <- renderPlot({
-
-    # generate bins based on input$bins from ui.R
-    x    <- faithful[, 2]
-    bins <- seq(min(x), max(x), length.out = input$bins + 1)
-
-    # draw the histogram with the specified number of bins
-    hist(x, breaks = bins, col = 'darkgray', border = 'white')
-
+  
+  output$rbokeh <- renderRbokeh({
+    
+    dt.plot <- dt.grd.sym[1:input$data.points] 
+    n <- nrow(dt.plot)
+    ramp <- colorRampPalette(c("red", "blue"))(n)
+    p <- figure() %>%
+      ly_points(i, j, data = dt.plot,
+                color = ramp, size = 13*prob,
+                hover = list(i, j))
+    p %>%                                                                                                         
+      x_range(c(957,1350)) %>%
+      y_range(c(1350,957)) %>%
+      x_axis(label = "amino acid j") %>%
+      y_axis(label = "amino acid i")
   })
-
+  
 })

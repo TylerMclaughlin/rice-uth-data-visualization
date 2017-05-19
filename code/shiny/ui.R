@@ -5,26 +5,27 @@
 # http://shiny.rstudio.com
 #
 
-library(shiny)
-
+# Define UI for application that draws a histogram
 shinyUI(fluidPage(
-
+  
   # Application title
-  titlePanel("Old Faithful Geyser Data"),
-
-  # Sidebar with a slider input for number of bins
+  titlePanel("Predicted Amino Acid Contacts for GAP-related domain (residues 962-1345)"),
+  
+  # Sidebar with a slider input for number of bins 
   sidebarLayout(
     sidebarPanel(
-      sliderInput("bins",
-                  "Number of bins:",
-                  min = 1,
-                  max = 50,
-                  value = 30)
+      sliderInput("data.points",
+                  "How Many Data Points Would You Like to Plot?",
+                  min = 50,
+                  max = 500,
+                  step = 50,
+                  value = 300)
     ),
-
-    # Show a plot of the generated distribution
+    
+    # Show a plot of the generated distributions
     mainPanel(
-      plotOutput("distPlot")
+      rbokehOutput("rbokeh")
     )
   )
 ))
+
