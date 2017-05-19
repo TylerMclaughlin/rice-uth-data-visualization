@@ -1,0 +1,6 @@
+Package: handyFunctions
+Title: Tools for Streamlining Tasks Specific to Workshop on Data Visualization 
+Version: 1.0
+Author: R Tyler McLaughlin
+Depends: R (>= 3.1.0)
+RoxygenNote: 6.0.1

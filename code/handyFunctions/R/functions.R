@@ -2,14 +2,17 @@
 
 library(data.table)
 
-#' Title
+#' symmetrize
 #' 
-#' @param your.dt a data.table generated from the txt file exported by Gremlin.
+#' @param your.dt a data.table generated from the txt file exported by Gremlin.  
+#' Must have columns 'i', 'j', 'i_id', 'j_id', and 'prob' 
 #'   
-#' @return
+#' @return a data.table that is now includes a symmetric list of contacts
+#' 
 #' @export
 #' 
-#' @examples
+#' @examples 
+#' a <- symmetrize(dt)
 symmetrize <- function(your.dt)
 {
    inverted.dt <- copy(your.dt)
