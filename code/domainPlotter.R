@@ -2,7 +2,7 @@ library(ggplot2)
 library(data.table)
 
 
-dt.grd <- data.table(read.table('../code/gremlinContacts_962-1345.txt',header = TRUE))
+dt.grd <- data.table(read.table('code/gremlinContacts_962-1345.txt',header = TRUE))
 
 dt.grd[,i:=i+961]
 dt.grd[,j:=j+961]
