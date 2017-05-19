@@ -2,19 +2,23 @@
 % Please edit documentation in R/functions.R
 \name{symmetrize}
 \alias{symmetrize}
-\title{symmetrize}
+\title{This function takes a list of pairwise contacts where i < j and doubles the
+list by adding pairs such that i > j.   It is akin to symmetrizing a matrix
+by reflecting across the diagonal.}
 \usage{
 symmetrize(your.dt)
 }
 \arguments{
-\item{your.dt}{a data.table generated from the txt file exported by Gremlin.
-Must have columns 'i', 'j', 'i_id', 'j_id', and 'prob'}
+\item{your.dt}{a data.table generated from the txt file exported by Gremlin. 
+Must have columns 'i', 'j', 'i_id', 'j_id', and 'prob'.}
 }
 \value{
 a data.table that is now includes a symmetric list of contacts
 }
 \description{
-symmetrize
+This function takes a list of pairwise contacts where i < j and doubles the
+list by adding pairs such that i > j.   It is akin to symmetrizing a matrix
+by reflecting across the diagonal.
 }
 \examples{
 a <- symmetrize(dt)

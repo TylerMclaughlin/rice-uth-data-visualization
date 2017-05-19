@@ -2,13 +2,15 @@
 
 library(data.table)
 
-#' symmetrize
+#' This function takes a list of pairwise contacts where i < j and doubles the
+#' list by adding pairs such that i > j.   It is akin to symmetrizing a matrix
+#' by reflecting across the diagonal.
 #' 
-#' @param your.dt a data.table generated from the txt file exported by Gremlin.  
-#' Must have columns 'i', 'j', 'i_id', 'j_id', and 'prob' 
+#' @param your.dt a data.table generated from the txt file exported by Gremlin. 
+#'   Must have columns 'i', 'j', 'i_id', 'j_id', and 'prob'.
 #'   
 #' @return a data.table that is now includes a symmetric list of contacts
-#' 
+#'   
 #' @export
 #' 
 #' @examples 
