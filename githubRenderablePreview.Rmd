@@ -1,17 +1,16 @@
 ---
 title: "Workshop on Data Visualization"
-# get rid of the runtime: shiny if you want just pdf
-#runtime: shiny
-output: html_document
+author: "R Tyler McLaughlin"
+date: "`r format(Sys.Date())`"
+output: github_document
+always_allow_html: yes
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-This R Markdown document is made interactive using Shiny. Unlike the more traditional workflow of creating static reports, you can now create documents that allow your readers to change the assumptions underlying your analysis and see the results immediately. 
-
-To learn more, see [Interactive Documents](http://rmarkdown.rstudio.com/authoring_shiny.html).
+**NOTE:  this is just a preview of the full documentation. If you wish to view the interactive plots, please navigate to https://rtylermclaughlin.shinyapps.io/shinyMarkdown/. GitHub can't render interactive plots  (shiny,Rbokeh) within a markdown (.md) file.  For full documentation (while hosting lasts), please navigate to https://rtylermclaughlin.shinyapps.io/shinyMarkdown/ **
 
 # Motivation for data visualization
 
@@ -54,7 +53,7 @@ We can use the "color" argument of aes() assist visualization of complex data.  
 
 ```{r}
 # color by the data point's number !     
-ggplot(anscombe,aes(x=x,y=y,color=factor(d)) ) + geom_point() + facet_grid(~set)
+ggplot(anscombe,aes(x = x,y = y,color = factor(d)) ) + geom_point() + facet_grid(~set)
 ```
 
 See what happens if you remove the `geom_point()` or `facet_grid()` terms.
@@ -165,13 +164,21 @@ This looks OK, but we can do a lot better. Recall that the figure axes are amino
 
 Let's try another package called "Rbokeh" and plot again.  With the "hover" argument, it can report properties of the data point when you hover over it with your mouse.  The "size" argument changes the size of the data points based on one of its associated values.    
 
+
+
+
 ```{r}
 # load Rbokeh
 library(rbokeh)
 # ly_points function is like the geom_point function.
 # we now have a "hover" argument that we can use.
-ly_points(figure(),i,j,data = dt.filtered,size = 13*prob, hover = list(i,j)) 
+ly_points(figure(),i,j,data = dt.filtered,size = 13*prob, hover = list(i,j))
 ```
+
+```{r,echo=FALSE}
+my.error <- "Rbokeh plots cannot be rendered on github markdown.  To see this plot, please navigate to https://rtylermclaughlin.shinyapps.io/shinyMarkdown/"
+my.error
+``` 
 
 
 
@@ -192,7 +199,7 @@ It's good programming practice to frequently test that variables are equal befor
 ```{r}
 # check to make sure 'last.value' 
 # equals the number of data points, as expected.
-#  == will always return TRUE or FALSE.  
+#  '==' will always return TRUE or FALSE.  
 last.value == nrow(dt.filtered)
 ```
 
@@ -212,7 +219,7 @@ improving readability without damaging the results.
 
 Pipes are useful when we have functions of functions of functions...
 
-```{r}
+```{r,eval=FALSE}
 # illustrates piping and coloring by a ramp.
 figure() %>%
   ly_points(i, j, data = dt.filtered,
@@ -224,7 +231,12 @@ figure() %>%
       y_axis(label = "amino acid i")
 ```
 
+```{r echo = FALSE}
+print(my.error)
+```
+
 Above, we included axis labels and also flipped the data along the vertical axis by specifying the `x_range()`. 
+
 
 After clicking the mouse icon, try zooming in and out of the RBokeh plot with your mouse's scroll wheel.  
 Notice how the size of the data points adapts to the extent of the zoom, showcasing one of the many benefits of user interactivity.  You could never do this on a TI-83 Plus. 
@@ -240,26 +252,28 @@ to learn about the color-perceptual benefits of coloring your data this way.
 
 <!-- # Making Highly Interactive Plots -->
 
-<!-- This last section will show you how to make plots that plot different things depending on what you tell it.  A great way of sharing your data with your collaborators who may not know R.  Playing with a shiny app in browser is far easier even if they are familiar with R. -->
+This last section will show you how to make plots that plot different things depending on what you tell it.  A great way of sharing your data with your collaborators who may not know R.  Playing with a shiny app in browser is far easier even if they are familiar with R.
 
-<!-- Every shiny app is made with a user interface and and a server file. -->
+Every shiny app is made with a user interface and and a server file.
 
-<!-- Take a standard R plot and wrap it in a `renderPlot()` function.  Wrap an Rbokeh plot in a `renderRbokeh()` function. -->
+Take a standard R plot and wrap it in a `renderPlot()` function.  Wrap an Rbokeh plot in a `renderRbokeh()` function.
 
-<!-- The `selectInput()` and `sliderInput()` functions create the drop down menus and the slider input widgets that constitute the user interface and send data to the `renderRbokeh()`. -->
+The `selectInput()` and `sliderInput()` functions create the drop down menus and the slider input widgets that constitute the user interface and send data to the `renderRbokeh()`.
 
-<!-- ```{r shiny bokeh} -->
-<!-- inputPanel( -->
-<!--   selectInput("color.1", label = "First color:", -->
-<!--               choices = c("red","orange","yellow", -->
-<!--                           "peachpuff","plum"),selected = "red"), -->
-<!--   selectInput("color.2", label = "Second color:", -->
-<!--               choices = c("blue","powderblue","skyblue4", -->
-<!--                           "turquoise2","snow3","steelblue2"),selected = "blue"), -->
-<!--   sliderInput("data.points", label = "Data points for plotting:", -->
-<!--               min = 50, max = 450, step = 25 , value = 300) -->
-<!-- ) -->
-<!-- ``` -->
+
+
+```{r shiny bokeh, eval=FALSE}
+inputPanel(
+  selectInput("color.1", label = "First color:",
+              choices = c("red","orange","yellow",
+                          "peachpuff","plum"),selected = "red"),
+  selectInput("color.2", label = "Second color:",
+              choices = c("blue","powderblue","skyblue4",
+                          "turquoise2","snow3","steelblue2"),selected = "blue"),
+  sliderInput("data.points", label = "Data points for plotting:",
+              min = 50, max = 450, step = 25 , value = 300)
+)
+```
 <!-- ```{r echo=FALSE} -->
 <!-- renderRbokeh({dt.plot <- dt.grd.sym[1:input$data.points]  -->
 <!--     # we need to define these agin so that  -->
@@ -282,26 +296,29 @@ to learn about the color-perceptual benefits of coloring your data this way.
 
 <!-- To get the figure to respond to the sliders, we also needed to code the following: -->
 
-<!-- ```{r eval=FALSE} -->
-<!-- renderRbokeh({dt.plot <- dt.grd.sym[1:input$data.points]  -->
-<!--     # we need to define these agin so that  -->
-<!--     # they are updated when the input changes -->
-<!--     n <- nrow(dt.plot) -->
-<!--     ramp <- colorRampPalette(c(input$color.1, input$color.2))(n) -->
-<!--     p <- figure() %>% -->
-<!--       ly_points(i, j, data = dt.plot, -->
-<!--                 color = ramp, size = 13*prob, -->
-<!--                 hover = list(i, j)) -->
-<!--     p %>% -->
-<!--       x_range(c(957,1350)) %>% -->
-<!--       y_range(c(1350,957)) %>% -->
-<!--       x_axis(label = "amino acid j") %>% -->
-<!--       y_axis(label = "amino acid i") -->
+```{r eval=FALSE}
+renderRbokeh({dt.plot <- dt.grd.sym[1:input$data.points]
+    # we need to define these agin so that
+    # they are updated when the input changes
+    n <- nrow(dt.plot)
+    ramp <- colorRampPalette(c(input$color.1, input$color.2))(n)
+    p <- figure() %>%
+      ly_points(i, j, data = dt.plot,
+                color = ramp, size = 13*prob,
+                hover = list(i, j))
+    p %>%
+      x_range(c(957,1350)) %>%
+      y_range(c(1350,957)) %>%
+      x_axis(label = "amino acid j") %>%
+      y_axis(label = "amino acid i")
 
 
-<!-- }) -->
-<!-- ``` -->
+})
+```
 
+```{r}
+print(my.error)
+```
 The major way in which the plotting code changed from before is that `colorRampPalette()` now takes two *variables*,`input$color.1` and `input$color.2` instead of fixed *strings*.  We are also now filtering the length of the data.table with the parameter `input$data.points`.
 
 RESUME HERE

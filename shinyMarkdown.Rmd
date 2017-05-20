@@ -1,6 +1,7 @@
 ---
 title: "Workshop on Data Visualization"
-# get rid of the runtime: shiny if you want just pdf
+author: "R Tyler McLaughlin""
+date: "`r format(Sys.Date())`"
 runtime: shiny
 output: html_document
 ---
@@ -192,7 +193,7 @@ It's good programming practice to frequently test that variables are equal befor
 ```{r}
 # check to make sure 'last.value' 
 # equals the number of data points, as expected.
-#  == will always return TRUE or FALSE.  
+#  '==' will always return TRUE or FALSE.  
 last.value == nrow(dt.filtered)
 ```
 
