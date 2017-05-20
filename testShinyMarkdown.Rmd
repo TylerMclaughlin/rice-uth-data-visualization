@@ -26,9 +26,9 @@ print(3+3)
 ```
 
 
-```{r include=FALSE}
-library(ggplot2)
-library(data.table)
+```{r}
+library("ggplot2")
+#library("data.table")
 source('./code/dataVizUtil/R/functions.R')
 ```
 
@@ -72,7 +72,7 @@ dt.grd[,j := j+961]
 
 'symmetrize' is a custom function I built, which adds the mirror image of data along the x = y axis. Functions are called like this:
 
-```{r}
+```{r, warning=TRUE}
 dt.grd.sym <- symmetrize(dt.grd)
 ```
 
