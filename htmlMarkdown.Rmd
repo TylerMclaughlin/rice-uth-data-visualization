@@ -238,69 +238,69 @@ colorRampPalette can take multiple colors as arguments.  Try typing
 to learn about the color-perceptual benefits of coloring your data this way.
 
 
-# Making Highly Interactive Plots
+<!-- # Making Highly Interactive Plots -->
 
-This last section will show you how to make plots that plot different things depending on what you tell it.  A great way of sharing your data with your collaborators who may not know R.  Playing with a shiny app in browser is far easier even if they are familiar with R.
+<!-- This last section will show you how to make plots that plot different things depending on what you tell it.  A great way of sharing your data with your collaborators who may not know R.  Playing with a shiny app in browser is far easier even if they are familiar with R. -->
 
-Every shiny app is made with a user interface and and a server file.
+<!-- Every shiny app is made with a user interface and and a server file. -->
 
-Take a standard R plot and wrap it in a `renderPlot()` function.  Wrap an Rbokeh plot in a `renderRbokeh()` function.
+<!-- Take a standard R plot and wrap it in a `renderPlot()` function.  Wrap an Rbokeh plot in a `renderRbokeh()` function. -->
 
-The `selectInput()` and `sliderInput()` functions create the drop down menus and the slider input widgets that constitute the user interface and send data to the `renderRbokeh()`.
+<!-- The `selectInput()` and `sliderInput()` functions create the drop down menus and the slider input widgets that constitute the user interface and send data to the `renderRbokeh()`. -->
 
-```{r shiny bokeh}
-inputPanel(
-  selectInput("color.1", label = "First color:",
-              choices = c("red","orange","yellow",
-                          "peachpuff","plum"),selected = "red"),
-  selectInput("color.2", label = "Second color:",
-              choices = c("blue","powderblue","skyblue4",
-                          "turquoise2","snow3","steelblue2"),selected = "blue"),
-  sliderInput("data.points", label = "Data points for plotting:",
-              min = 50, max = 450, step = 25 , value = 300)
-)
-```
-```{r echo=FALSE}
-renderRbokeh({dt.plot <- dt.grd.sym[1:input$data.points] 
-    # we need to define these agin so that 
-    # they are updated when the input changes
-    n <- nrow(dt.plot)
-    ramp <- colorRampPalette(c(input$color.1, input$color.2))(n)
-    p <- figure() %>%
-      ly_points(i, j, data = dt.plot,
-                color = ramp, size = 13*prob,
-                hover = list(i, j))
-    p %>%
-      x_range(c(957,1350)) %>%
-      y_range(c(1350,957)) %>%
-      x_axis(label = "amino acid j") %>%
-      y_axis(label = "amino acid i")
-  
-  
-})
-```
+<!-- ```{r shiny bokeh} -->
+<!-- inputPanel( -->
+<!--   selectInput("color.1", label = "First color:", -->
+<!--               choices = c("red","orange","yellow", -->
+<!--                           "peachpuff","plum"),selected = "red"), -->
+<!--   selectInput("color.2", label = "Second color:", -->
+<!--               choices = c("blue","powderblue","skyblue4", -->
+<!--                           "turquoise2","snow3","steelblue2"),selected = "blue"), -->
+<!--   sliderInput("data.points", label = "Data points for plotting:", -->
+<!--               min = 50, max = 450, step = 25 , value = 300) -->
+<!-- ) -->
+<!-- ``` -->
+<!-- ```{r echo=FALSE} -->
+<!-- renderRbokeh({dt.plot <- dt.grd.sym[1:input$data.points]  -->
+<!--     # we need to define these agin so that  -->
+<!--     # they are updated when the input changes -->
+<!--     n <- nrow(dt.plot) -->
+<!--     ramp <- colorRampPalette(c(input$color.1, input$color.2))(n) -->
+<!--     p <- figure() %>% -->
+<!--       ly_points(i, j, data = dt.plot, -->
+<!--                 color = ramp, size = 13*prob, -->
+<!--                 hover = list(i, j)) -->
+<!--     p %>% -->
+<!--       x_range(c(957,1350)) %>% -->
+<!--       y_range(c(1350,957)) %>% -->
+<!--       x_axis(label = "amino acid j") %>% -->
+<!--       y_axis(label = "amino acid i") -->
 
-To get the figure to respond to the sliders, we also needed to code the following:
 
-```{r eval=FALSE}
-renderRbokeh({dt.plot <- dt.grd.sym[1:input$data.points] 
-    # we need to define these agin so that 
-    # they are updated when the input changes
-    n <- nrow(dt.plot)
-    ramp <- colorRampPalette(c(input$color.1, input$color.2))(n)
-    p <- figure() %>%
-      ly_points(i, j, data = dt.plot,
-                color = ramp, size = 13*prob,
-                hover = list(i, j))
-    p %>%
-      x_range(c(957,1350)) %>%
-      y_range(c(1350,957)) %>%
-      x_axis(label = "amino acid j") %>%
-      y_axis(label = "amino acid i")
-  
-  
-})
-```
+<!-- }) -->
+<!-- ``` -->
+
+<!-- To get the figure to respond to the sliders, we also needed to code the following: -->
+
+<!-- ```{r eval=FALSE} -->
+<!-- renderRbokeh({dt.plot <- dt.grd.sym[1:input$data.points]  -->
+<!--     # we need to define these agin so that  -->
+<!--     # they are updated when the input changes -->
+<!--     n <- nrow(dt.plot) -->
+<!--     ramp <- colorRampPalette(c(input$color.1, input$color.2))(n) -->
+<!--     p <- figure() %>% -->
+<!--       ly_points(i, j, data = dt.plot, -->
+<!--                 color = ramp, size = 13*prob, -->
+<!--                 hover = list(i, j)) -->
+<!--     p %>% -->
+<!--       x_range(c(957,1350)) %>% -->
+<!--       y_range(c(1350,957)) %>% -->
+<!--       x_axis(label = "amino acid j") %>% -->
+<!--       y_axis(label = "amino acid i") -->
+
+
+<!-- }) -->
+<!-- ``` -->
 
 The major way in which the plotting code changed from before is that `colorRampPalette()` now takes two *variables*,`input$color.1` and `input$color.2` instead of fixed *strings*.  We are also now filtering the length of the data.table with the parameter `input$data.points`.
 

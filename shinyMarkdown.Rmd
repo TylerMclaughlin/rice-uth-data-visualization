@@ -174,7 +174,7 @@ ly_points(figure(),i,j,data = dt.filtered,size = 13*prob, hover = list(i,j))
 ```
 
 
-
+Try hovering over data points.
 
 The `size`, `hover`, and `color` arguments are great ways of visualizing relatively **high-dimensional data**.
 
