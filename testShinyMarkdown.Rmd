@@ -1,7 +1,7 @@
 ---
 title: "Workshop on Data Visualization"
 # get rid of the runtime: shiny if you want just pdf
-#runtime: shiny
+#######################runtime: shiny
 output: html_document
 ---
 
@@ -29,13 +29,13 @@ print(3+3)
 ```{r include=FALSE}
 library(ggplot2)
 library(data.table)
-source('code/dataVizUtil/R/functions.R')
+source('./code/dataVizUtil/R/functions.R')
 ```
 
 Import the data set into a data.table:
 
 ```{r}
-anscombe <- data.table(read.csv('data/anscombe.csv'))
+anscombe <- data.table(read.csv('./data/anscombe.csv'))
 ```
 What does the raw data look like? Use this command to view the "head" of the data.table.
 
@@ -45,17 +45,19 @@ head(anscombe)
 
 
 ```{r}
-ggplot(anscombe,aes(x=x,y=y)) + facet_grid(~set)
+ggplot(anscombe,aes(x=x,y=y)) + geom_point() + facet_grid(~set)
 ```
 
 
 * picture of data goes here
 
+# A Second Example 
+
 Import your data again by first reading a file then converting it to the ***data.table*** format.
 This time, we're reading a .txt file, so we can use the function 'read.table'
 
 ```{r}
-dt.grd <- data.table(read.table('data/gremlinContacts_962-1345.txt',header = TRUE))
+dt.grd <- data.table(read.table('./data/gremlinContacts_962-1345.txt',header = TRUE))
 
 ```
 data.tables in R make it *very* easy to manipulate data in numerous kinds
