@@ -3,7 +3,6 @@ title: "Workshop on Data Visualization"
 author: "R Tyler McLaughlin"
 date: "`r format(Sys.Date())`"
 output: github_document
-always_allow_html: yes
 ---
 
 ```{r setup, include=FALSE}
@@ -167,7 +166,7 @@ Let's try another package called "Rbokeh" and plot again.  With the "hover" argu
 
 
 
-```{r}
+```{r,eval=FALSE}
 # load Rbokeh
 library(rbokeh)
 # ly_points function is like the geom_point function.
