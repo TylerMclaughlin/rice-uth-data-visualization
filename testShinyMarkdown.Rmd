@@ -57,7 +57,7 @@ We can use the "color" argument of aes() assist visualization of complex data.  
 ggplot(anscombe,aes(x=x,y=y,color=factor(d)) ) + geom_point() + facet_grid(~set)
 ```
 
-See what happens if you remove the "geom_point" or "facet_grid" terms.
+See what happens if you remove the `geom_point()` or `facet_grid()` terms.
 
 Ok, We have four data sets that look quite different.  How about the statistics?
 
@@ -66,8 +66,8 @@ Ok, We have four data sets that look quite different.  How about the statistics?
 <!-- ggplot(anscombe,aes(x=x,y=y) ) + geom_point(aes(color = factor(d))) + geom_smooth(method = "lm") +  facet_grid(~set) -->
 <!-- ``` -->
 
-Let's manipulate data.tables, with "[i, j, by]" notation.
-"i" is the rows,  "j" is the columns, and  you will see what "by" means: 
+Let's manipulate data.tables, using their so-called "[i, j, by]" notation (this is derived from SQL).
+"i" refers to operations on rows and "j" refers to operations on columns. "by" means calculate "j" grouping by "by"
 
 ```{r}
 # .() means "as data.table"
@@ -76,7 +76,7 @@ Let's manipulate data.tables, with "[i, j, by]" notation.
 anscombe[,.(my.Average.X = mean(x),my.Average.Y = mean(y)), by = "set"  ]
 ```
 
-That yielded the mean for x, which is the same for all sets.  The same is also true for the mean for y.  This is *not* a bug!  Four distinct data sets look very different yet they are exactly same **on average**.  
+That yielded the mean for x, which is the same for all sets.  The same is also true for the mean for y.  This is *not* a bug!  Four distinct data sets look very different yet they are exactly the same **on average**.  
 This is part of what is special about Anscombe's quartet. 
 
 How about their standard deviation?
@@ -92,7 +92,7 @@ For nicer notation, you can also write:
 anscombe[,.(my.SD.X = sd(x),my.SD.Y = sd(y)), .(set)  ]
 ```
 
-Ok, before we move on to another data set, let's compute the Pearson Product-Moment Correlation Coefficient (Person's r):
+Before we move on to another data set, let's compute the Pearson Product-Moment Correlation Coefficient (Pearson's r):
 
 ```{r}
 # the function cor()
@@ -101,12 +101,20 @@ anscombe[,.(my.XY.correlation = cor(x,y)), .(set)]
 
 # A Second Example 
 
+This example teaches several tricks for visualizing data that is more complex than Anscombe's quartet. This data set has a broad range of discrete variables (a pairwise contact map in protein sequence space) and associated continous variables.  
+
+The data set was generated with the *Gremlin* tool (http://gremlin.bakerlab.org) to predict 3D protein contacts from sequence data alone.  
+First *Gremlin* searches a protein database and collects homologous protein sequences from many organisms and computes a multiple sequence alignment.  
+It next uses an information-theoretical algorithm to tabulate how pairs of residues covary across homologs.  
+Residues with a strong tendency to co-evolve have a high probability of forming a contact in 3-dimensions.  
+Cool, right?  Let's get on to visualizing.
+
 Import your data again by first reading a file then converting it to the ***data.table*** format.
 This time, we're reading a .txt file, so we can use the function 'read.table'
 
 ```{r}
 dt.grd <- data.table(read.table('./data/gremlinContacts_962-1345.txt',header = TRUE))
-
+head(dt.grd)
 ```
 
 data.tables in R make it *very* easy to manipulate data in numerous kinds
@@ -121,7 +129,7 @@ dt.grd[,i := i+961]
 dt.grd[,j := j+961]
 ```
 
-'symmetrize' is a custom function I built, which adds the mirror image of data along the x = y axis. Functions are called like this:
+`symmetrize()` is a custom function I built, which adds the mirror image of data along the x = y axis. Functions are called like this:
 
 ```{r, warning=TRUE}
 dt.grd.sym <- symmetrize(dt.grd)
@@ -139,7 +147,7 @@ Munging is a routine task in data analysis and data.tables is the best tool I've
 
 Let's try plotting this data with ggplot().
 
-To avoid overplotting, let's filter the data, and plot the first 300 data points.  We are filtering rows, so let's do this in data.table "i"
+To avoid overplotting, let's filter the data, and plot the first 300 data points.  We are filtering rows, so let's do this in data.table "i".  We don't need to write commas if we are just specifying "i".
 ```{r}
 
 last.value <- 300
@@ -153,7 +161,7 @@ nrow(dt.filtered)
 ggplot(dt.filtered) + geom_point(aes(x = i,y = j,colour = -prob)) 
 ```
 
-This looks OK, but it is nothing special. Recall that the figure axes are amino acid numbers. We may want to know the exact residue number, and that is not determinable by eye.  
+This looks OK, but we can do a lot better. Recall that the figure axes are amino acid numbers. We may want to know the exact residue number, and that is not determinable by eye.  
 
 Let's try another package called "Rbokeh" and plot again.  With the "hover" argument, it can report properties of the data point when you hover over it with your mouse.  The "size" argument changes the size of the data points based on one of its associated values.    
 
@@ -165,7 +173,10 @@ library(rbokeh)
 ly_points(figure(),i,j,data = dt.filtered,size = 13*prob, hover = list(i,j)) 
 ```
 
-The "**size**", "**hover**", and "**color**" arguments are great ways of visualizing relatively **high-dimensional data**.
+
+
+
+The `size`, `hover`, and `color` arguments are great ways of visualizing relatively **high-dimensional data**.
 
 We can color with a **ramp**, aka color gradient, where we generate all the hues between two colors.  
 
@@ -175,8 +186,8 @@ Let's first find out how many data points we have...
 nrow(dt.filtered)
 ```
 
-Recall that we already defined a variable with this value, 'last.value'.
-It's good programming practice to frequently test that variables are equal.  
+Recall that we already defined a variable with this value, named `last.value`.
+It's good programming practice to frequently test that variables are equal before proceding while *assuming* they are equal.  
 
 ```{r}
 # check to make sure 'last.value' 
@@ -194,10 +205,10 @@ length(ramp)
 head(ramp,20)
 ```
 
-Great.  Next, we'll color using the ramp.  
+Great.  Next, we'll color using our ramp.  
 
-We can also use the **pipe** syntax from the *magrittr* package to make the code more readable.  This lets us pull the function 'figure()' outside of the function 'ly_points()' and place it upstream,  
-improving readability without affecting the results.
+We can also use the **pipe** syntax '%>%' from the *magrittr* package to make the code more readable.  This lets us pull the function `figure()` outside of the function `ly_points()` and place it upstream,  
+improving readability without damaging the results.
 
 Pipes are useful when we have functions of functions of functions...
 
@@ -206,8 +217,14 @@ Pipes are useful when we have functions of functions of functions...
 figure() %>%
   ly_points(i, j, data = dt.filtered,
             color = ramp, size = 13*prob,
-            hover = list(i, j))
+            hover = list(i, j)) %>%
+      x_range(c(957,1350)) %>%
+      y_range(c(1350,957)) %>%
+      x_axis(label = "amino acid j") %>%
+      y_axis(label = "amino acid i")
 ```
+
+Above, we included axis labels and also flipped the data along the vertical axis by specifying the `x_range()`. 
 
 After clicking the mouse icon, try zooming in and out of the RBokeh plot with your mouse's scroll wheel.  
 Notice how the size of the data points adapts to the extent of the zoom, showcasing one of the many benefits of user interactivity.  You could never do this on a TI-83 Plus. 
@@ -227,15 +244,9 @@ This last section will show you how to make plots that plot different things dep
 
 Every shiny app is made with a user interface and and a server file.
 
-Take a standard R plot and wrap it in a renderPlot() function.  Rbokeh plot in a renderRbokeh().
+Take a standard R plot and wrap it in a `renderPlot()` function.  Wrap an Rbokeh plot in a `renderRbokeh()` function.
 
-```{r shinyPlot}
-
-```
-
-## Inputs and Outputs
-
-You can embed Shiny inputs and outputs in your document. Outputs are automatically updated whenever inputs change.  This demonstrates how a standard R plot can be made interactive by wrapping it in the Shiny `renderPlot` function. The `selectInput` and `sliderInput` functions create the input widgets used to drive the plot.
+The `selectInput()` and `sliderInput()` functions create the drop down menus and the slider input widgets that constitute the user interface and send data to the `renderRbokeh()`.
 
 ```{r shiny bokeh}
 inputPanel(
@@ -272,7 +283,6 @@ renderRbokeh({dt.plot <- dt.grd.sym[1:input$data.points]
 To get the figure to respond to the sliders, we also needed to code the following:
 
 ```{r eval=FALSE}
-{r echo=FALSE}
 renderRbokeh({dt.plot <- dt.grd.sym[1:input$data.points] 
     # we need to define these agin so that 
     # they are updated when the input changes
@@ -292,8 +302,13 @@ renderRbokeh({dt.plot <- dt.grd.sym[1:input$data.points]
 })
 ```
 
+The major way in which the plotting code changed from before is that `colorRampPalette()` now takes two *variables*,`input$color.1` and `input$color.2` instead of fixed *strings*.  We are also now filtering the length of the data.table with the parameter `input$data.points`.
+
 RESUME HERE
 
+# Questions?  Issues?
+
+send an email to **rtylermclaughlin@gmail.com**
 
 <!-- ## Embedded Application -->
 
