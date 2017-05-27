@@ -322,7 +322,7 @@ The major way in which the plotting code changed from before is that `colorRampP
 
 RESUME HERE
 
-# Questions?  Issues?
+# Questions?  Comments?
 
 send an email to **rtylermclaughlin@gmail.com**
 

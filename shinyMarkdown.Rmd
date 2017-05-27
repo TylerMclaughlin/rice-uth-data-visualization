@@ -1,6 +1,6 @@
 ---
 title: "Workshop on Data Visualization"
-author: "R Tyler McLaughlin""
+author: "R Tyler McLaughlin"
 date: "`r format(Sys.Date())`"
 runtime: shiny
 output: html_document
@@ -48,17 +48,17 @@ We can plot by running the following ggplot command.
 # it tells ggplot what to plot and how to map it 
 # to the geom_point() function.
 # notice the ~ notation. 
-ggplot(anscombe,aes(x=x,y=y) ) + geom_point() + facet_grid(~set)
+ggplot(anscombe,aes(x=x,y=y) ) + geom_point() + facet_wrap(~set)
 ```
 
 We can use the "color" argument of aes() assist visualization of complex data.  Here, it's simply coloring by the number assigned to each data point. This makes it easier to see that each set in the quartet has 11 data points. 
 
 ```{r}
 # color by the data point's number !     
-ggplot(anscombe,aes(x=x,y=y,color=factor(d)) ) + geom_point() + facet_grid(~set)
+ggplot(anscombe,aes(x=x,y=y,color=factor(d)) ) + geom_point() + facet_wrap(~set,nrow=2,ncol=2)
 ```
 
-See what happens if you remove the `geom_point()` or `facet_grid()` terms.
+See what happens if you remove the `geom_point()` or `facet_wrap()` terms.
 
 Ok, We have four data sets that look quite different.  How about the statistics?
 
@@ -164,7 +164,7 @@ ggplot(dt.filtered) + geom_point(aes(x = i,y = j,colour = -prob))
 
 This looks OK, but we can do a lot better. Recall that the figure axes are amino acid numbers. We may want to know the exact residue number, and that is not determinable by eye.  
 
-Let's try another package called "Rbokeh" and plot again.  With the "hover" argument, it can report properties of the data point when you hover over it with your mouse.  The "size" argument changes the size of the data points based on one of its associated values.    
+Let's try another package called "Rbokeh" and plot again.  With the `hover` argument, it can report properties of the data point when you hover over it with your mouse.  The `size` argument changes the size of the data points based on one of its associated values.    
 
 ```{r}
 # load Rbokeh
@@ -228,7 +228,7 @@ figure() %>%
 Above, we included axis labels and also flipped the data along the vertical axis by specifying the `x_range()`. 
 
 After clicking the mouse icon, try zooming in and out of the RBokeh plot with your mouse's scroll wheel.  
-Notice how the size of the data points adapts to the extent of the zoom, showcasing one of the many benefits of user interactivity.  You could never do this on a TI-83 Plus. 
+Notice how the size of the data points adapts to the extent of the zoom, showcasing one of the many benefits of user interactivity.  Try doing this on a TI-83 Plus. 
 
 colorRampPalette can take multiple colors as arguments.  Try typing
 
@@ -307,7 +307,7 @@ The major way in which the plotting code changed from before is that `colorRampP
 
 RESUME HERE
 
-# Questions?  Issues?
+# Questions?  Comments?
 
 send an email to **rtylermclaughlin@gmail.com**
 
