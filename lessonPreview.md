@@ -3,7 +3,7 @@ Workshop on Data Visualization
 R Tyler McLaughlin
 2017-05-20
 
-**NOTE: this is just a preview of the full documentation. If you wish to view the interactive plots, please navigate to <https://rtylermclaughlin.shinyapps.io/shinyMarkdown/>. GitHub can't render interactive plots (shiny,Rbokeh) within a markdown (.md) file. For full documentation (while hosting lasts), please navigate to <https://rtylermclaughlin.shinyapps.io/shinyMarkdown/> **
+**NOTE: this is just a preview of the full documentation. If you wish to view the interactive plots, please navigate to <https://rtylermclaughlin.shinyapps.io/shinyMarkdown/>. GitHub can't render interactive plots (shiny,Rbokeh) within a markdown (.md) file. For full documentation (while hosting lasts), please navigate to <https://rtylermclaughlin.shinyapps.io/shinyMarkdown/>**
 
 Motivation for data visualization
 =================================
@@ -64,7 +64,7 @@ ggplot(anscombe,aes(x = x,y = y,color = factor(d)) ) + geom_point() + facet_grid
 
 See what happens if you remove the `geom_point()` or `facet_grid()` terms.
 
-Ok, We have four data sets that look quite different. How about the statistics?
+Ok, We have four data sets with 11 data points each, yet they appear different qualitatively. How about the statistics?
 
 <!-- ```{r} -->
 <!-- #  add a linear fit.  "lm"  means "linear model"     -->
@@ -223,7 +223,7 @@ nrow(dt.filtered)
 
     ## [1] 300
 
-Recall that we already defined a variable with this value, named `last.value`. It's good programming practice to frequently test that variables are equal before proceding while *assuming* they are equal.
+Recall that we already defined a variable with this value, named `last.value`. It's good programming practice to frequently test that the variables we think are equal are *in fact* equal.  
 
 ``` r
 # check to make sure 'last.value' 
