@@ -51,7 +51,7 @@ We can plot by running the following ggplot command.
 ggplot(anscombe,aes(x=x,y=y) ) + geom_point() + facet_grid(~set)
 ```
 
-![](githubRenderablePreview_files/figure-markdown_github/unnamed-chunk-4-1.png)
+![](lessonPreviewImages/figure-markdown_github/unnamed-chunk-4-1.png)
 
 We can use the "color" argument of aes() assist visualization of complex data. Here, it's simply coloring by the number assigned to each data point. This makes it easier to see that each set in the quartet has 11 data points.
 
@@ -60,7 +60,7 @@ We can use the "color" argument of aes() assist visualization of complex data. H
 ggplot(anscombe,aes(x = x,y = y,color = factor(d)) ) + geom_point() + facet_grid(~set)
 ```
 
-![](githubRenderablePreview_files/figure-markdown_github/unnamed-chunk-5-1.png)
+![](lessonPreviewImages/figure-markdown_github/unnamed-chunk-5-1.png)
 
 See what happens if you remove the `geom_point()` or `facet_grid()` terms.
 
@@ -195,7 +195,7 @@ nrow(dt.filtered)
 ggplot(dt.filtered) + geom_point(aes(x = i,y = j,colour = -prob)) 
 ```
 
-![](githubRenderablePreview_files/figure-markdown_github/unnamed-chunk-15-1.png)
+![](lessonPreviewImages/figure-markdown_github/unnamed-chunk-15-1.png)
 
 This looks OK, but we can do a lot better. Recall that the figure axes are amino acid numbers. We may want to know the exact residue number, and that is not determinable by eye.
 
@@ -354,9 +354,7 @@ print(my.error)
 
 The major way in which the plotting code changed from before is that `colorRampPalette()` now takes two *variables*,`input$color.1` and `input$color.2` instead of fixed *strings*. We are also now filtering the length of the data.table with the parameter `input$data.points`.
 
-RESUME HERE
-
-Questions? Issues?
+Questions? Comments?
 ==================
 
 send an email to <**rtylermclaughlin@gmail.com*>\*
