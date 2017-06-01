@@ -1,6 +1,6 @@
 ---
-title: "Workshop on Data Visualization"
-author: "R Tyler McLaughlin"
+title: "Workshop on Data Visualization at UTH"
+author: "R Tyler McLaughlin - Rice University"
 date: "`r format(Sys.Date())`"
 runtime: shiny
 output: html_document
@@ -10,22 +10,28 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-This R Markdown document is made interactive using Shiny. Unlike the more traditional workflow of creating static reports, you can now create documents that allow your readers to change the assumptions underlying your analysis and see the results immediately. 
+# Motivation for Data Visualization
 
-To learn more, see [Interactive Documents](http://rmarkdown.rstudio.com/authoring_shiny.html).
+Visualizing data is, in my belief, vastly more important than reporting the numerical statistics that describe the data.  Especially to the scientist, statistics are always necessary yet never sufficient.  
 
-# Motivation for data visualization
+The synthetic dataset 'Anscombe's quartet' is a terrific example of why you should visualize (in 2D:  "plot") your data.  In a sense, it shows how statistics fail to reveal phenomena that are extremely obvious.  In this lesson, we will use R for its powerful statistics and plotting libraries.
 
-Anscombe's quartet is a terrific example of the importance of plotting data points rather than reporting average values in bar chart format.    
-Load necessary packages for plotting and manipulating data:
+First, in your R script, let's load necessary packages for plotting and manipulating data:
 
 ```{r}
-# hashtags indicate comments.
-# I.e., this line is not executable R code but a comment.
-# load ggplot2 and data.table packages  
+# A hashtag turns text into a comment.
+# load ggplot2 and data.table packages with library() 
 library("ggplot2")
 library("data.table")
 source('./code/dataVizUtil/R/functions.R')
+```
+
+If you get an error message from running the `source()` function, try clicking in the RStudio menus `Session` `Set Working Directory` > `To Source File Location`.  If you get an error message from running the `library()` commands, try the following to install all necessary packages for this lesson:
+
+```{r,eval=FALSE}
+install.packages("ggplot2")
+install.packages("data.table")
+install.packages("Rbokeh")
 ```
 
 Import the data set into a data.table:
@@ -40,67 +46,89 @@ head(anscombe)
 ```
 
 
-By plotting, you see that there are four, quite different data sets.  
-We can plot by running the following ggplot command.
+By plotting, you see that we have four, quite different data sets.  
+We can plot by running the following **ggplot** command.
 
 ```{r}
 # aes stands for a e s t h e t i c s.  This is a very important function!
 # it tells ggplot what to plot and how to map it 
 # to the geom_point() function.
 # notice the ~ notation. 
-ggplot(anscombe,aes(x=x,y=y) ) + geom_point() + facet_wrap(~set)
+ggplot(anscombe,aes(x = x,y = y) ) + geom_point() + facet_wrap(~set)
 ```
 
-We can use the "color" argument of aes() assist visualization of complex data.  Here, it's simply coloring by the number assigned to each data point. This makes it easier to see that each set in the quartet has 11 data points. 
+We can use the "color" argument of aes() to assist visualization of complex data.  Here, it's simply coloring by the number assigned to each data point. This makes it easier to see that each set in the quartet has 11 data points. 
 
 ```{r}
 # color by the data point's number !     
 ggplot(anscombe,aes(x=x,y=y,color=factor(d)) ) + geom_point() + facet_wrap(~set,nrow=2,ncol=2)
 ```
 
-See what happens if you remove the `geom_point()` or `facet_wrap()` terms.
+If you're curious, see what happens if you remove the `geom_point()` or `facet_wrap()` terms.
 
-Ok, We have four data sets that look quite different.  How about the statistics?
+Ok, we have four data sets that appear quite different qualitatively.  How about their statistics?
 
-<!-- ```{r} -->
-<!-- #  add a linear fit.  "lm"  means "linear model"     -->
-<!-- ggplot(anscombe,aes(x=x,y=y) ) + geom_point(aes(color = factor(d))) + geom_smooth(method = "lm") +  facet_grid(~set) -->
-<!-- ``` -->
 
-Let's manipulate data.tables, using their so-called "[i, j, by]" notation (this is derived from SQL).
-"i" refers to operations on rows and "j" refers to operations on columns. "by" means calculate "j" grouping by "by"
+Let's manipulate data.tables, using their so-called `[i, j, by]` notation (this is derived from SQL).
+"i" refers to operations on rows and "j" refers to operations on columns. "by" means calculate "j" grouping by what follows "by =".  **If you can understand this, learning to use R data.tables for your research will be easy.**
 
 ```{r}
 # .() means "as data.table"
-# Stylistically, R often uses periods as spaces.
+# Stylistically, R often uses periods instead of spaces for variables and functions.
 # Let's define new variables "my.Average.X" and "my.Average.Y"
-anscombe[,.(my.Average.X = mean(x),my.Average.Y = mean(y)), by = "set"  ]
+anscombe[,.(my.Average.X = mean(x),my.Average.Y = mean(y)), by = "set" ]
 ```
 
-That yielded the mean for x, which is the same for all sets.  The same is also true for the mean for y.  This is *not* a bug!  Four distinct data sets look very different yet they are exactly the same **on average**.  
+That yielded the mean for x, which is the same for all sets.  The same is also true for the mean for y.  This is *not* a bug!  Four distinct data sets look different yet they are exactly the same **on average**.  
 This is part of what is special about Anscombe's quartet. 
 
 How about their standard deviation?
 
 ```{r}
 # The function 'sd' also does exactly what you'd expect
-anscombe[,.(my.SD.X = sd(x),my.SD.Y = sd(y)), by = "set"  ]
+anscombe[,.(my.SD.X = sd(x),my.SD.Y = sd(y)), by = "set" ]
 ```
 
 For nicer notation, you can also write:
 
 ```{r,eval=FALSE}
-anscombe[,.(my.SD.X = sd(x),my.SD.Y = sd(y)), .(set)  ]
+anscombe[,.(my.SD.X = sd(x),my.SD.Y = sd(y)), .(set) ]
 ```
 
 Before we move on to another data set, let's compute the Pearson Product-Moment Correlation Coefficient (Pearson's r):
 
 ```{r}
 # the function cor()
-anscombe[,.(my.XY.correlation = cor(x,y)), .(set)]
+anscombe[,.(my.XY.correlation = cor(x,y)), .(set) ]
 ```
 
-# A Second Example 
+For a final statistical description of Anscombe's quartet, let's add a linear fit to our plotted data.  
+We do this using a `geom_smooth()` layer.
+
+```{r} 
+#  add a linear fit.  "lm"  means "linear model"
+ggplot(anscombe,aes(x = x, y = y) ) + geom_point(aes(color = factor(d))) + geom_smooth(method = "lm",color = "black",fullrange=TRUE) +  facet_wrap(~set)
+```
+
+Recall, the slope of a linear fit is always proportional to Pearson's R.  The value of the slope can be calculated with the `coef()` and `lm()` functions, and some `[]` notation, which is the syntax for indexing lists.
+
+```{r}
+# lm(y ~ x) makes a linear model for y as a function of x.  This is 'simple linear regression.'
+# coef() yields a list of the coefficients of a linear model.  [2] refers to the slope, [1] to the intercept.
+# use ':=' to add a new column called 'slope.'
+anscombe[,slope := coef(lm(y ~ x))[2],.(set)]
+
+```
+
+We compare it to Pearson's R, scaled by the ratio of standard deviations, sd(y)/sd(x)*cor(x,y), with the following:
+
+```{r}
+anscombe.slopes <- anscombe[,.(slope, scaled.pearson = sd(y)/sd(x)*cor(x,y) ),.(set)]
+anscombe.slopes[, are.they.equal := all.equal(slope,scaled.pearson),.(set)]
+unique(anscombe.slopes[,,.(set)])
+```
+
+# A Real, Biological Example
 
 This example teaches several tricks for visualizing data that is more complex than Anscombe's quartet. This data set has a broad range of discrete variables (a pairwise contact map in protein sequence space) and associated continous variables.  
 
@@ -108,9 +136,9 @@ The data set was generated with the *Gremlin* tool (http://gremlin.bakerlab.org)
 First *Gremlin* searches a protein database and collects homologous protein sequences from many organisms and computes a multiple sequence alignment.  
 It next uses an information-theoretical algorithm to tabulate how pairs of residues covary across homologs.  
 Residues with a strong tendency to co-evolve have a high probability of forming a contact in 3-dimensions.  
-Cool, right?  Let's get on to visualizing.
+Cool, right?  Let's get on to visualizing the contact map starting with importing the data set.
 
-Import your data again by first reading a file then converting it to the ***data.table*** format.
+Again, we import data by first reading a file then converting it to the ***data.table*** format.
 This time, we're reading a .txt file, so we can use the function 'read.table'
 
 ```{r}
@@ -118,10 +146,10 @@ dt.grd <- data.table(read.table('./data/gremlinContacts_962-1345.txt',header = T
 head(dt.grd)
 ```
 
-data.tables in R make it *very* easy to manipulate data in numerous kinds
+After a short learning curve, data.tables in R make it *very* easy to manipulate data in numerous kinds
 of ways.  Here we are adjusting the numbering scheme of the amino acid residues 
-by adding the integer 961 to all residue numbers .
-":=" translates roughly to "add *this* new column with *this* definition"
+by adding the integer 961 to all residue numbers.
+":=" means "adding by reference", and translates roughly to "add *this* new column with *this* definition"
 <!-- FIX NAMING, because of the i,j notation-->
 
 ```{r}
@@ -188,7 +216,8 @@ nrow(dt.filtered)
 ```
 
 Recall that we already defined a variable with this value, named `last.value`.
-It's good programming practice to frequently test that variables are equal before proceding while *assuming* they are equal.  
+
+It's good programming practice to frequently test that the variables we *think are equal* are *in fact equal*.
 
 ```{r}
 # check to make sure 'last.value' 
@@ -263,7 +292,7 @@ inputPanel(
 ```
 ```{r echo=FALSE}
 renderRbokeh({dt.plot <- dt.grd.sym[1:input$data.points] 
-    # we need to define these agin so that 
+    # we need to define these again so that 
     # they are updated when the input changes
     n <- nrow(dt.plot)
     ramp <- colorRampPalette(c(input$color.1, input$color.2))(n)
@@ -305,30 +334,16 @@ renderRbokeh({dt.plot <- dt.grd.sym[1:input$data.points]
 
 The major way in which the plotting code changed from before is that `colorRampPalette()` now takes two *variables*,`input$color.1` and `input$color.2` instead of fixed *strings*.  We are also now filtering the length of the data.table with the parameter `input$data.points`.
 
-RESUME HERE
+# Conclusions
+
+Plotting data is extremely important because descriptive statistics can overlook to many qualities of a dataset.  In the example of Anscombe's quartet, descriptive statistics fail entirely to distinguish data sets.
+Data.tables are a great way to manipulate data before plotting or before calculating statistical properties.  They are extremely fast and you can filter data and apply operations by row or by column, using compact `[i,j,by]` notation.
+
+ggplot offers elegance and incredible versatility with simple, modular syntax. Adding layers with `geom` functions and changing aesthetics with the `aes()` command is central to exploratory data analysis.  Facets can be used for easy subplotting.  Rbokeh is another plotting package that in some ways goes beyond ggplot by letting you interact with your data by hovering or zooming.  
+
+The package Shiny lets you create highly interactive plots. 
+Shiny plots can be nearly as sophisticated as any other JavaScript apps you will find the internet but are written with much fewer lines of code.  Plus, Shiny is directly compatible with all the data analysis tools provided by R. 
 
 # Questions?  Comments?
 
-send an email to **rtylermclaughlin@gmail.com**
-
-<!-- ## Embedded Application -->
-
-<!-- It's also possible to embed an entire Shiny application within an R Markdown document using the `shinyAppDir` function. This example embeds a Shiny application located in another directory: -->
-
-<!-- ```{r tabsets, echo=FALSE} -->
-<!-- shinyAppDir( -->
-<!--   system.file("examples/06_tabsets", package = "shiny"), -->
-<!--   options = list( -->
-<!--     width = "100%", height = 550 -->
-<!--   ) -->
-<!-- ) -->
-<!-- ``` -->
-
-<!-- Note the use of the `height` parameter to determine how much vertical space the embedded application should occupy. -->
-
-<!-- You can also use the `shinyApp` function to define an application inline rather then in an external directory. -->
-
-<!-- In all of R code chunks above the `echo = FALSE` attribute is used. This is to prevent the R code within the chunk from rendering in the document alongside the Shiny components. -->
-
-
-
+Send an email to **rtylermclaughlin@gmail.com**
