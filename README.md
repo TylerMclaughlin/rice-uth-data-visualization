@@ -2,16 +2,18 @@
 @ UTHealth's Graduate School of Biomedical Science, June 02, 2017.
 ------------------------------------------------
 
-Here is Tyler's code for Workshop on Data Visualization at UTH Graduate School of Biomedical Sciences.
+Here is Tyler's code repository for the Workshop on Data Visualization at UTH Graduate School of Biomedical Sciences.
 
 ## Where to start?
 
-If you want to preview the content covered in the workshop, see the file `lessonPreview.md`.  That file has a link to a more interactive version, hosted on shinyapps.io.  (https://rtylermclaughlin.shinyapps.io/shinyMarkdown/)
+If you want to preview the content covered in the workshop, see the file `lessonPreview.md`.  That file contains a link to a more interactive version, hosted on shinyapps.io (https://rtylermclaughlin.shinyapps.io/shinyMarkdown/).
 
-An empty .R file is called `startHere.R`.  If you're running through the tutorial, open this file and start here.  This way, you won't have to modify the `source()` command.
+ If you're running through the tutorial, first clone this repository, then open `startHere.R` and begin writing code in this file while following along with the lesson.  This way, you won't have to modify the `source()` command because all folders will be in the correct place.  Later in the tutorial, you'll be asked to open a new .R file and Shiny app.
 
-## How did you make this?
+## How were these files made?
 
-`lessonPreview.md` was generated in Rstudio using the code in the Rmarkdown file `codeForLessonPreview.Rmd` and the package knitr, for "elegant, flexible and fast dynamic report generation." (https://yihui.name/knitr/)
+All code was written in RStudio.
 
-The interactive Shiny Markdown file (hosted on shinyapps.io) was made with Shiny and RStudio, and the code for its generation is in `shinyMarkdown.Rmd`
+`lessonPreview.md` was generated with the **Rmarkdown** file `codeForLessonPreview.Rmd` and the package **knitr**, for "elegant, flexible and fast dynamic report generation." (https://yihui.name/knitr/)
+
+The interactive **Shiny Markdown** file (hosted on shinyapps.io) was made with **Shiny** and RStudio, and the code for its generation is in `shinyMarkdown.Rmd`.
