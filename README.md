@@ -6,7 +6,7 @@ Here is Tyler's code repository for the Workshop on Data Visualization at UTH Gr
 
 ## Where to start?
 
-If you want to preview the content covered in the workshop, see the file `lessonPreview.md`.  That file contains a link to a more interactive version, hosted on shinyapps.io (https://rtylermclaughlin.shinyapps.io/shinyMarkdown/).
+If you want to preview the content covered in the workshop, see the file `lessonPreview.md`.  That file is a port of a more interactive version, hosted on shinyapps.io (https://rtylermclaughlin.shinyapps.io/shinyMarkdown/).
 
  If you're running through the tutorial, first clone this repository, then open `startHere.R` and begin writing code in this file while following along with the lesson.  This way, you won't have to modify the `source()` command because all folders will be in the correct place.  Later in the tutorial, you'll be asked to open a new .R file and Shiny app.
 
